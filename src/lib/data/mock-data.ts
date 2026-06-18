@@ -1,0 +1,177 @@
+import type { Availability, Service, Staff, StaffService } from "@/types/database";
+
+// Mirrors supabase/migrations/0004_seed.sql so the app looks the same in
+// preview mode as it would against a freshly-seeded database.
+
+export const MOCK_STAFF: Staff[] = [
+  {
+    id: "11111111-1111-4111-8111-111111111111",
+    auth_user_id: null,
+    name: "Jordan",
+    email: "jordan@2getherhairstudio.com",
+    phone: "716-555-0101",
+    photo_url:
+      "https://images.unsplash.com/photo-1622296089780-290d715192af?w=400&h=400&fit=crop&crop=faces",
+    bio: "Master barber with 12+ years behind the chair. Known for precision fades and classic cuts with a modern edge.",
+    specialties: ["Fades", "Classic Cuts", "Beard Sculpting"],
+    role: "admin",
+    active: true,
+    sort_order: 1,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "22222222-2222-4222-8222-222222222222",
+    auth_user_id: null,
+    name: "Mia",
+    email: "mia@2getherhairstudio.com",
+    phone: "716-555-0102",
+    photo_url:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=faces",
+    bio: "Color and curl specialist who loves transforming looks with vibrant, healthy color and defined curl patterns.",
+    specialties: ["Color", "Curly Hair", "Balayage"],
+    role: "stylist",
+    active: true,
+    sort_order: 2,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "33333333-3333-4333-8333-333333333333",
+    auth_user_id: null,
+    name: "Alex",
+    email: "alex@2getherhairstudio.com",
+    phone: "716-555-0103",
+    photo_url:
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop&crop=faces",
+    bio: "Stylist specializing in braids and protective styles, plus all-around cuts for every member of the family.",
+    specialties: ["Braids", "Protective Styles", "Kids Cuts"],
+    role: "stylist",
+    active: true,
+    sort_order: 3,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+];
+
+export const MOCK_SERVICES: Service[] = [
+  {
+    id: "a1000000-0000-4000-8000-000000000001",
+    name: "Men's Cut",
+    category: "Hair",
+    description: "Classic precision haircut tailored to your style.",
+    duration_minutes: 45,
+    price_cents: 3000,
+    active: true,
+    sort_order: 1,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "a1000000-0000-4000-8000-000000000002",
+    name: "Fade & Design",
+    category: "Hair",
+    description: "Sharp fade with optional custom line design.",
+    duration_minutes: 60,
+    price_cents: 4000,
+    active: true,
+    sort_order: 2,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "a1000000-0000-4000-8000-000000000003",
+    name: "Beard Trim",
+    category: "Beard",
+    description: "Shape-up and line work to keep your beard sharp.",
+    duration_minutes: 20,
+    price_cents: 1500,
+    active: true,
+    sort_order: 3,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "a1000000-0000-4000-8000-000000000004",
+    name: "Full Cut + Beard",
+    category: "Hair",
+    description: "Complete haircut and beard trim combo.",
+    duration_minutes: 75,
+    price_cents: 5000,
+    active: true,
+    sort_order: 4,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "a1000000-0000-4000-8000-000000000005",
+    name: "Women's Cut & Style",
+    category: "Hair",
+    description: "Cut, blowout, and style tailored to you.",
+    duration_minutes: 60,
+    price_cents: 5500,
+    active: true,
+    sort_order: 5,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "a1000000-0000-4000-8000-000000000006",
+    name: "Color Treatment",
+    category: "Color",
+    description: "Full color service including consultation.",
+    duration_minutes: 90,
+    price_cents: 8000,
+    active: true,
+    sort_order: 6,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "a1000000-0000-4000-8000-000000000007",
+    name: "Braids (simple)",
+    category: "Braids",
+    description: "Simple braid styling, great for protective styles.",
+    duration_minutes: 90,
+    price_cents: 6500,
+    active: true,
+    sort_order: 7,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+  {
+    id: "a1000000-0000-4000-8000-000000000008",
+    name: "Kids Cut (under 12)",
+    category: "Kids",
+    description: "Haircut for clients under 12 years old.",
+    duration_minutes: 30,
+    price_cents: 2000,
+    active: true,
+    sort_order: 8,
+    created_at: "2024-01-01T00:00:00Z",
+  },
+];
+
+export const MOCK_STAFF_SERVICES: StaffService[] = [
+  // Jordan (Master Barber)
+  { staff_id: "11111111-1111-4111-8111-111111111111", service_id: "a1000000-0000-4000-8000-000000000001" },
+  { staff_id: "11111111-1111-4111-8111-111111111111", service_id: "a1000000-0000-4000-8000-000000000002" },
+  { staff_id: "11111111-1111-4111-8111-111111111111", service_id: "a1000000-0000-4000-8000-000000000003" },
+  { staff_id: "11111111-1111-4111-8111-111111111111", service_id: "a1000000-0000-4000-8000-000000000004" },
+  { staff_id: "11111111-1111-4111-8111-111111111111", service_id: "a1000000-0000-4000-8000-000000000008" },
+  // Mia (Color & Curl Specialist)
+  { staff_id: "22222222-2222-4222-8222-222222222222", service_id: "a1000000-0000-4000-8000-000000000005" },
+  { staff_id: "22222222-2222-4222-8222-222222222222", service_id: "a1000000-0000-4000-8000-000000000006" },
+  { staff_id: "22222222-2222-4222-8222-222222222222", service_id: "a1000000-0000-4000-8000-000000000008" },
+  // Alex (Stylist & Braids)
+  { staff_id: "33333333-3333-4333-8333-333333333333", service_id: "a1000000-0000-4000-8000-000000000001" },
+  { staff_id: "33333333-3333-4333-8333-333333333333", service_id: "a1000000-0000-4000-8000-000000000002" },
+  { staff_id: "33333333-3333-4333-8333-333333333333", service_id: "a1000000-0000-4000-8000-000000000005" },
+  { staff_id: "33333333-3333-4333-8333-333333333333", service_id: "a1000000-0000-4000-8000-000000000007" },
+  { staff_id: "33333333-3333-4333-8333-333333333333", service_id: "a1000000-0000-4000-8000-000000000008" },
+];
+
+type AvailabilityWindow = Pick<Availability, "day_of_week" | "start_time" | "end_time">;
+
+// Mon-Sat 9:00 AM - 7:00 PM, closed Sunday — same as the seed data.
+const STANDARD_WEEK: AvailabilityWindow[] = [1, 2, 3, 4, 5, 6].map((day) => ({
+  day_of_week: day,
+  start_time: "09:00:00",
+  end_time: "19:00:00",
+}));
+
+export const MOCK_AVAILABILITY: Record<string, AvailabilityWindow[]> = {
+  "11111111-1111-4111-8111-111111111111": STANDARD_WEEK,
+  "22222222-2222-4222-8222-222222222222": STANDARD_WEEK,
+  "33333333-3333-4333-8333-333333333333": STANDARD_WEEK,
+};
