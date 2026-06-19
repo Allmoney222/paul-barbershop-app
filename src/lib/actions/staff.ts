@@ -80,14 +80,28 @@ async function sendInviteToStaff({
   const supabase = await createClient();
   const admin = createAdminClient();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const redirectTo = `${appUrl}/barber/accept-invite`;
 
-  const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+  // Try invite first; if the auth user already exists fall back to recovery link
+  let linkData, linkError;
+  ({ data: linkData, error: linkError } = await admin.auth.admin.generateLink({
     type: "invite",
     email,
-    options: { redirectTo: `${appUrl}/barber/accept-invite` },
-  });
+    options: { redirectTo },
+  }));
 
-  if (linkError) throw linkError;
+  if (linkError) {
+    if (linkError.message?.toLowerCase().includes("already been registered")) {
+      ({ data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+        type: "recovery",
+        email,
+        options: { redirectTo },
+      }));
+    }
+    if (linkError) throw linkError;
+  }
+
+  if (!linkData) throw new Error("Failed to generate invite link");
 
   // Link the Supabase auth user to the staff record (no-op if already set)
   if (linkData.user) {
@@ -103,8 +117,29 @@ async function sendInviteToStaff({
     to: email,
     staffName: name,
     shopName: shopInfo.name,
-    inviteLink: linkData.properties.action_link,
+    inviteLink: linkData.properties?.action_link ?? "",
   });
+}
+
+export async function deleteStaff(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  if (!id) throw new Error("Missing staff id");
+
+  const supabase = await createClient();
+  const admin = createAdminClient();
+
+  const { data: staff } = await supabase.from("staff").select("auth_user_id").eq("id", id).maybeSingle();
+  if (!staff) throw new Error("Staff member not found");
+
+  if (staff.auth_user_id) {
+    await admin.auth.admin.deleteUser(staff.auth_user_id);
+  }
+
+  const { error } = await supabase.from("staff").delete().eq("id", id);
+  if (error) throw error;
+
+  revalidatePath("/admin/staff");
+  redirect("/admin/staff");
 }
 
 export async function updateStaff(formData: FormData) {

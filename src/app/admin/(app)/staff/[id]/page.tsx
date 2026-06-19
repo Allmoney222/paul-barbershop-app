@@ -5,6 +5,7 @@ import { StaffForm } from "@/components/admin/staff-form";
 import { Button } from "@/components/ui/button";
 import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { updateStaff, resendStaffInvite } from "@/lib/actions/staff";
+import { DeleteStaffButton } from "@/components/admin/delete-staff-button";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function EditStaffPage({
@@ -71,6 +72,18 @@ export default async function EditStaffPage({
             {hasAccount ? "Re-send Invite Email" : "Send Invite Email"}
           </Button>
         </form>
+      </section>
+
+      <GoldDivider className="my-6" />
+
+      <section className="rounded-xl border border-red-500/20 bg-[#1A1A1A] p-6">
+        <h2 className="font-display text-lg text-red-400">Danger Zone</h2>
+        <p className="mt-1 text-sm text-[#888888]">
+          Permanently remove this staff member and revoke their portal access. This cannot be undone.
+        </p>
+        <div className="mt-4">
+          <DeleteStaffButton id={staff.id} name={staff.name} />
+        </div>
       </section>
     </div>
   );
