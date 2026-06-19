@@ -44,11 +44,11 @@ function isRedirectError(error: unknown): boolean {
   return typeof error === "object" && error !== null && "digest" in error && String((error as { digest?: unknown }).digest).startsWith("NEXT_REDIRECT");
 }
 
-/** Returns the staff row for the current session, redirecting non-admins to the dashboard. */
+/** Returns the staff row for the current session, redirecting non-admins away from admin. */
 export async function requireAdmin(): Promise<Staff> {
   const staff = await requireStaff();
   if (staff.role !== "admin") {
-    redirect("/admin/dashboard");
+    redirect("/barber/dashboard");
   }
   return staff;
 }

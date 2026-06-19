@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
-import { requireStaff } from "@/lib/supabase/admin-auth";
+import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { AdminSidebarNav } from "@/components/admin/admin-sidebar";
 import {
   Sheet,
@@ -20,7 +20,7 @@ export default async function AdminAppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const staff = await requireStaff();
+  const staff = await requireAdmin();
 
   return (
     <div className="min-h-screen bg-[#0D0D0D] text-[#F5F5F5]">
