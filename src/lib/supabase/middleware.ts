@@ -7,6 +7,7 @@ export async function updateSession(request: NextRequest) {
 
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
   const isLoginRoute = request.nextUrl.pathname.startsWith("/admin/login");
+  const isBarberLoginRoute = request.nextUrl.pathname === "/barber/login";
 
   // Without real Supabase credentials there's no session to refresh. Admin
   // routes still redirect to login; everything else renders normally.
@@ -57,6 +58,12 @@ export async function updateSession(request: NextRequest) {
   if (isLoginRoute && user) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  if (isBarberLoginRoute && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/barber/dashboard";
     return NextResponse.redirect(url);
   }
 
