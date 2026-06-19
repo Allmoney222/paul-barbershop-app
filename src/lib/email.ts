@@ -71,6 +71,67 @@ export async function sendBookingConfirmationEmail(details: BookingEmailDetails)
   });
 }
 
+export interface StaffInviteEmailDetails {
+  to: string;
+  staffName: string;
+  shopName: string;
+  inviteLink: string;
+}
+
+export async function sendStaffInviteEmail(details: StaffInviteEmailDetails) {
+  const resend = getResend();
+  if (!resend) {
+    console.warn("RESEND_API_KEY not set — skipping invite email");
+    return;
+  }
+
+  const from = process.env.RESEND_FROM_EMAIL ?? "2Gether Hair Studio <onboarding@resend.dev>";
+
+  await resend.emails.send({
+    from,
+    to: details.to,
+    subject: `You've been invited to join ${escapeHtml(details.shopName)}`,
+    html: `
+      <div style="font-family: Helvetica, Arial, sans-serif; background:#0D0D0D; color:#F5F5F5; padding:32px; max-width:560px; margin:0 auto;">
+        <h1 style="font-size:24px; margin-bottom:4px;">
+          <span style="color:#C9A96E; font-style:italic;">2Gether</span> Hair Studio
+        </h1>
+        <p style="color:#888888; margin-top:0; font-size:14px;">Staff Portal Invitation</p>
+        <hr style="border:none; border-top:1px solid #C9A96E; opacity:0.5; margin:24px 0;" />
+
+        <p>Hi ${escapeHtml(details.staffName)},</p>
+        <p>
+          You've been invited to join the ${escapeHtml(details.shopName)} staff portal, where you can
+          manage your schedule, availability, services, and client list.
+        </p>
+
+        <div style="margin:32px 0; text-align:center;">
+          <a
+            href="${details.inviteLink}"
+            style="display:inline-block; background:#C9A96E; color:#0D0D0D; text-decoration:none;
+                   font-weight:600; font-size:15px; padding:14px 32px; border-radius:8px;"
+          >
+            Accept Invitation &amp; Set Password
+          </a>
+        </div>
+
+        <p style="color:#888888; font-size:13px;">
+          This link will take you to a page where you can create your password. Once set, you can
+          sign in any time at <strong style="color:#F5F5F5;">${escapeHtml(process.env.NEXT_PUBLIC_APP_URL ?? "")}/barber/login</strong>.
+        </p>
+        <p style="color:#888888; font-size:13px;">
+          The link expires in 24&nbsp;hours. If it has expired, ask your administrator to send a new one.
+        </p>
+
+        <hr style="border:none; border-top:1px solid #333; margin:24px 0;" />
+        <p style="color:#888888; font-size:12px; margin:0;">
+          ${escapeHtml(details.shopName)} &middot; If you weren&apos;t expecting this email, you can safely ignore it.
+        </p>
+      </div>
+    `,
+  });
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

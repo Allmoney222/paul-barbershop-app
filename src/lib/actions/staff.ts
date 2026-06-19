@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendStaffInviteEmail } from "@/lib/email";
+import { getShopInfo } from "@/lib/data/shop";
 import type { StaffRole } from "@/types/database";
 
 const ROLES: StaffRole[] = ["admin", "stylist", "barber"];
@@ -45,15 +47,7 @@ export async function createStaff(formData: FormData) {
   if (error) throw error;
 
   if (sendInvite) {
-    const admin = createAdminClient();
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-    const { data: invited, error: inviteError } = await admin.auth.admin.inviteUserByEmail(fields.email, {
-      redirectTo: `${appUrl}/barber/accept-invite`,
-    });
-
-    if (!inviteError && invited.user) {
-      await supabase.from("staff").update({ auth_user_id: invited.user.id }).eq("id", staff.id);
-    }
+    await sendInviteToStaff({ staffId: staff.id, name: fields.name, email: fields.email });
   }
 
   revalidatePath("/admin/staff");
@@ -65,29 +59,52 @@ export async function resendStaffInvite(formData: FormData) {
   if (!id) throw new Error("Missing staff id");
 
   const supabase = await createClient();
-  const { data: staff } = await supabase.from("staff").select("email").eq("id", id).maybeSingle();
+  const { data: staff } = await supabase.from("staff").select("name, email").eq("id", id).maybeSingle();
   if (!staff) throw new Error("Staff member not found");
 
-  const admin = createAdminClient();
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-
-  const { data: invited, error: inviteError } = await admin.auth.admin.inviteUserByEmail(staff.email, {
-    redirectTo: `${appUrl}/barber/accept-invite`,
-  });
-
-  if (inviteError) throw inviteError;
-
-  // Link auth_user_id if not set yet (first invite)
-  if (invited.user) {
-    await supabase
-      .from("staff")
-      .update({ auth_user_id: invited.user.id })
-      .eq("id", id)
-      .is("auth_user_id", null);
-  }
+  await sendInviteToStaff({ staffId: id, name: staff.name, email: staff.email });
 
   revalidatePath(`/admin/staff/${id}`);
   redirect(`/admin/staff/${id}?invited=1`);
+}
+
+async function sendInviteToStaff({
+  staffId,
+  name,
+  email,
+}: {
+  staffId: string;
+  name: string;
+  email: string;
+}) {
+  const supabase = await createClient();
+  const admin = createAdminClient();
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
+  const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+    type: "invite",
+    email,
+    options: { redirectTo: `${appUrl}/barber/accept-invite` },
+  });
+
+  if (linkError) throw linkError;
+
+  // Link the Supabase auth user to the staff record (no-op if already set)
+  if (linkData.user) {
+    await supabase
+      .from("staff")
+      .update({ auth_user_id: linkData.user.id })
+      .eq("id", staffId)
+      .is("auth_user_id", null);
+  }
+
+  const shopInfo = await getShopInfo();
+  await sendStaffInviteEmail({
+    to: email,
+    staffName: name,
+    shopName: shopInfo.name,
+    inviteLink: linkData.properties.action_link,
+  });
 }
 
 export async function updateStaff(formData: FormData) {
