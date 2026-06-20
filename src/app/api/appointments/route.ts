@@ -99,14 +99,17 @@ export async function POST(request: NextRequest) {
 
   // Fetch related info for email + response
   const [{ data: service }, { data: staff }] = await Promise.all([
-    supabase.from("services").select("name, price_cents").eq("id", serviceId).single(),
+    supabase.from("services").select("name, price_cents, requires_deposit").eq("id", serviceId).single(),
     supabase.from("staff").select("name").eq("id", appointment.staff_id).single(),
   ]);
 
   let clientSecret: string | null = null;
   const bookingSettings = await getBookingSettings();
 
-  if (payDeposit && bookingSettings.deposit_enabled && bookingSettings.deposit_amount_cents > 0) {
+  // Server-side enforcement: color (requires_deposit) services always charge a deposit
+  const shouldChargeDeposit = service?.requires_deposit ? true : (payDeposit ?? false);
+
+  if (shouldChargeDeposit && bookingSettings.deposit_amount_cents > 0) {
     const stripe = getStripe();
     if (stripe) {
       try {

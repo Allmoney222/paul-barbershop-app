@@ -29,6 +29,7 @@ export type Service = {
   description: string | null;
   duration_minutes: number;
   price_cents: number;
+  requires_deposit: boolean;
   active: boolean;
   sort_order: number;
   created_at: string;

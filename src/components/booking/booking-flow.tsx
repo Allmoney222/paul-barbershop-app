@@ -146,12 +146,14 @@ export function BookingFlow({
           amountCents={bookingSettings.deposit_amount_cents}
           onSuccess={() => router.push(`/book/confirmation/${cancelToken}`)}
         />
-        <button
-          onClick={() => router.push(`/book/confirmation/${cancelToken}`)}
-          className="mt-4 w-full text-center text-xs text-[#888888] underline-offset-4 hover:underline"
-        >
-          I&apos;ll pay at the shop instead — view my confirmation
-        </button>
+        {!selectedService?.requires_deposit && (
+          <button
+            onClick={() => router.push(`/book/confirmation/${cancelToken}`)}
+            className="mt-4 w-full text-center text-xs text-[#888888] underline-offset-4 hover:underline"
+          >
+            I&apos;ll pay at the shop instead — view my confirmation
+          </button>
+        )}
       </div>
     );
   }
@@ -166,7 +168,7 @@ export function BookingFlow({
           selectedServiceId={serviceId}
           onSelect={(service) => {
             setServiceId(service.id);
-            // Reset downstream selections if the service changes
+            setPayDeposit(service.requires_deposit);
             setStaffId(null);
             setDate(null);
             setTime(null);
@@ -220,8 +222,6 @@ export function BookingFlow({
           time={time}
           details={details}
           bookingSettings={bookingSettings}
-          payDeposit={payDeposit}
-          onPayDepositChange={setPayDeposit}
         />
       )}
 

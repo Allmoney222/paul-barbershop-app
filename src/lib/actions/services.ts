@@ -13,6 +13,7 @@ function serviceFieldsFromForm(formData: FormData) {
     description: String(formData.get("description") ?? "").trim() || null,
     duration_minutes: Number(formData.get("duration_minutes") ?? 30),
     price_cents: Math.round(priceDollars * 100),
+    requires_deposit: formData.get("requires_deposit") === "on",
     active: formData.get("active") === "on",
     sort_order: Number(formData.get("sort_order") ?? 0),
   };

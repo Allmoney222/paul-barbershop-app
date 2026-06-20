@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { GoldDivider } from "@/components/site/gold-divider";
 import { formatDuration, formatPrice, formatTime12h, formatDateLong } from "@/lib/format";
 import { SHOP_TIMEZONE } from "@/lib/constants";
@@ -13,16 +12,12 @@ export function ConfirmStep({
   time,
   details,
   bookingSettings,
-  payDeposit,
-  onPayDepositChange,
 }: {
   service: Service;
   staff: Staff | null; // null = "no preference"
   time: string; // ISO
   details: ClientDetails;
   bookingSettings: BookingSettings;
-  payDeposit: boolean;
-  onPayDepositChange: (value: boolean) => void;
 }) {
   const date = new Date(time);
 
@@ -47,22 +42,13 @@ export function ConfirmStep({
         {details.clientNotes && <SummaryRow label="Note" value={details.clientNotes} last />}
       </div>
 
-      {bookingSettings.deposit_enabled && bookingSettings.deposit_amount_cents > 0 && (
-        <div className="mt-6 rounded-xl border border-[#C9A96E]/20 bg-[#C9A96E]/5 p-5">
-          <label className="flex items-start gap-3">
-            <Checkbox
-              checked={payDeposit}
-              onCheckedChange={(checked) => onPayDepositChange(checked === true)}
-              className="mt-0.5 border-[#C9A96E]/50 data-[state=checked]:bg-[#C9A96E] data-[state=checked]:text-[#0D0D0D]"
-            />
-            <span className="text-sm text-[#F5F5F5]">
-              Pay a {formatPrice(bookingSettings.deposit_amount_cents)} deposit now to hold this
-              appointment.{" "}
-              <span className="text-[#888888]">
-                You can also leave this unchecked and pay the full amount at the shop.
-              </span>
-            </span>
-          </label>
+      {service.requires_deposit && bookingSettings.deposit_amount_cents > 0 && (
+        <div className="mt-6 rounded-xl border border-[#C9A96E]/30 bg-[#C9A96E]/5 p-5">
+          <p className="text-sm font-medium text-[#C9A96E]">Deposit required</p>
+          <p className="mt-1 text-sm text-[#F5F5F5]">
+            A {formatPrice(bookingSettings.deposit_amount_cents)} deposit is required to hold this
+            appointment. You will pay the remaining balance at the shop.
+          </p>
         </div>
       )}
     </div>

@@ -128,6 +128,16 @@ export function ServiceForm({
       <label className="flex items-center gap-2 text-sm text-[#F5F5F5]">
         <input
           type="checkbox"
+          name="requires_deposit"
+          defaultChecked={service?.requires_deposit ?? false}
+          className="h-4 w-4 rounded border-white/10 bg-[#0D0D0D] accent-[#C9A96E]"
+        />
+        Requires deposit at booking
+      </label>
+
+      <label className="flex items-center gap-2 text-sm text-[#F5F5F5]">
+        <input
+          type="checkbox"
           name="active"
           defaultChecked={service?.active ?? true}
           className="h-4 w-4 rounded border-white/10 bg-[#0D0D0D] accent-[#C9A96E]"
