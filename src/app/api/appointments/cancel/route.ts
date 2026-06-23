@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendCancellationSMS } from "@/lib/twilio";
 
 const cancelSchema = z.object({
   token: z.string().uuid(),
@@ -34,6 +35,25 @@ export async function POST(request: NextRequest) {
     }
     console.error("cancel_appointment_by_token error", error);
     return NextResponse.json({ error: "Failed to cancel appointment" }, { status: 500 });
+  }
+
+  // Send cancellation SMS to client (non-blocking)
+  if (data) {
+    try {
+      const appointmentData = Array.isArray(data) ? data[0] : data;
+      const { client_phone, client_name, service_name, start_time } = appointmentData;
+
+      if (client_phone) {
+        await sendCancellationSMS({
+          clientPhone: client_phone,
+          clientName: client_name,
+          serviceName: service_name,
+          startTime: new Date(start_time),
+        });
+      }
+    } catch (err) {
+      console.error("Failed to send cancellation SMS", err);
+    }
   }
 
   return NextResponse.json({ appointment: data });

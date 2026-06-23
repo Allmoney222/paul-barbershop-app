@@ -11,6 +11,7 @@ import { formatDateInTz } from "@/lib/timezone";
 import { SHOP_TIMEZONE } from "@/lib/constants";
 import { getStripe } from "@/lib/stripe";
 import { sendBookingConfirmationEmail } from "@/lib/email";
+import { sendBookingConfirmationSMS, sendBookingAlertSMS } from "@/lib/twilio";
 import type { AppointmentByTokenResult } from "@/types/database";
 
 // Permissive UUID-format check: accepts any 8-4-4-4-12 hex string regardless
@@ -104,7 +105,7 @@ export async function POST(request: NextRequest) {
   // Fetch related info for email + response
   const [{ data: service }, { data: staff }] = await Promise.all([
     supabase.from("services").select("name, price_cents, requires_deposit").eq("id", serviceId).single(),
-    supabase.from("staff").select("name").eq("id", appointment.staff_id).single(),
+    supabase.from("staff").select("name, phone").eq("id", appointment.staff_id).single(),
   ]);
 
   let clientSecret: string | null = null;
@@ -152,6 +153,34 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error("Failed to send confirmation email", err);
+  }
+
+  // Send SMS notifications (non-blocking)
+  try {
+    await sendBookingConfirmationSMS({
+      clientPhone: clientPhone,
+      clientName,
+      serviceName: service?.name ?? "Appointment",
+      staffName: staff?.name ?? "our team",
+      startTime: new Date(appointment.start_time),
+      cancelToken: appointment.cancel_token,
+    });
+  } catch (err) {
+    console.error("Failed to send client confirmation SMS", err);
+  }
+
+  if (staff?.phone) {
+    try {
+      await sendBookingAlertSMS({
+        staffPhone: staff.phone,
+        staffName: staff.name ?? "Staff member",
+        clientName,
+        serviceName: service?.name ?? "Appointment",
+        startTime: new Date(appointment.start_time),
+      });
+    } catch (err) {
+      console.error("Failed to send staff alert SMS", err);
+    }
   }
 
   return NextResponse.json({
