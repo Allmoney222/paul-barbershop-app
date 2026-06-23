@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { MOCK_SERVICES, MOCK_STAFF, MOCK_STAFF_SERVICES } from "@/lib/data/mock-data";
 import { DEFAULT_BOOKING_SETTINGS, DEFAULT_SHOP_INFO } from "@/lib/constants";
@@ -8,7 +8,7 @@ export async function getShopInfo(): Promise<ShopInfo> {
   if (!isSupabaseConfigured()) return DEFAULT_SHOP_INFO;
 
   try {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("settings")
       .select("value")
@@ -27,7 +27,7 @@ export async function getBookingSettings(): Promise<BookingSettings> {
   if (!isSupabaseConfigured()) return DEFAULT_BOOKING_SETTINGS;
 
   try {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("settings")
       .select("value")
@@ -46,7 +46,7 @@ export async function getActiveServices(): Promise<Service[]> {
   if (!isSupabaseConfigured()) return MOCK_SERVICES.filter((s) => s.active);
 
   try {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("services")
       .select("*")
@@ -65,7 +65,7 @@ export async function getActiveStaff(): Promise<Staff[]> {
   if (!isSupabaseConfigured()) return MOCK_STAFF.filter((s) => s.active);
 
   try {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("staff")
       .select("*")
@@ -84,7 +84,7 @@ export async function getStaffServiceMap(): Promise<StaffService[]> {
   if (!isSupabaseConfigured()) return MOCK_STAFF_SERVICES;
 
   try {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase.from("staff_services").select("*");
 
     if (error) throw error;

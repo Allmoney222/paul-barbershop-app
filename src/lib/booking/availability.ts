@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import { generateSlotsForStaff } from "@/lib/booking/slots";
 import { zonedTimeToUtc } from "@/lib/timezone";
 import { DEFAULT_BOOKING_SETTINGS, SHOP_TIMEZONE } from "@/lib/constants";
@@ -47,7 +47,7 @@ async function getAvailableSlotsFromSupabase(
   params: GetAvailableSlotsParams
 ): Promise<GetAvailableSlotsResult> {
   const { serviceId, staffId, date } = params;
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const { data: service, error: serviceError } = await supabase
     .from("services")
@@ -192,7 +192,7 @@ function getMockAvailableSlots(params: GetAvailableSlotsParams): GetAvailableSlo
 }
 
 async function getBookingSettingsInternal(
-  supabase: Awaited<ReturnType<typeof createClient>>
+  supabase: ReturnType<typeof createPublicClient>
 ): Promise<BookingSettings> {
   const { data } = await supabase.from("settings").select("value").eq("key", "booking").maybeSingle();
   if (!data?.value) return DEFAULT_BOOKING_SETTINGS;
