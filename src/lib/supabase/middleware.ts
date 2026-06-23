@@ -20,9 +20,10 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
+  const stripBom = (s: string) => s.charCodeAt(0) === 0xfeff ? s.slice(1) : s;
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    stripBom(process.env.NEXT_PUBLIC_SUPABASE_URL!),
+    stripBom(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!),
     {
       cookies: {
         getAll() {
