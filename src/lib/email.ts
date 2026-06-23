@@ -2,10 +2,14 @@ import { Resend } from "resend";
 import { formatDateLong, formatPrice, formatTime12h } from "@/lib/format";
 import { SHOP_TIMEZONE } from "@/lib/constants";
 
+function stripBom(s: string): string {
+  return s.charCodeAt(0) === 0xfeff ? s.slice(1) : s;
+}
+
 function getResend(): Resend | null {
   const key = process.env.RESEND_API_KEY;
   if (!key) return null;
-  return new Resend(key);
+  return new Resend(stripBom(key));
 }
 
 export interface BookingEmailDetails {
@@ -33,7 +37,7 @@ export async function sendBookingConfirmationEmail(details: BookingEmailDetails)
   const dateStr = formatDateLong(details.startTime, SHOP_TIMEZONE);
   const timeStr = `${formatTime12h(details.startTime, SHOP_TIMEZONE)} - ${formatTime12h(details.endTime, SHOP_TIMEZONE)}`;
 
-  const from = process.env.RESEND_FROM_EMAIL ?? "2Gether Hair Studio <onboarding@resend.dev>";
+  const from = stripBom(process.env.RESEND_FROM_EMAIL ?? "") || "2Gether Hair Studio <onboarding@resend.dev>";
 
   await resend.emails.send({
     from,
@@ -85,7 +89,7 @@ export async function sendStaffInviteEmail(details: StaffInviteEmailDetails) {
     return;
   }
 
-  const from = process.env.RESEND_FROM_EMAIL ?? "2Gether Hair Studio <onboarding@resend.dev>";
+  const from = stripBom(process.env.RESEND_FROM_EMAIL ?? "") || "2Gether Hair Studio <onboarding@resend.dev>";
 
   await resend.emails.send({
     from,
