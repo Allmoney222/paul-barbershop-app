@@ -13,8 +13,12 @@ import { getStripe } from "@/lib/stripe";
 import { sendBookingConfirmationEmail } from "@/lib/email";
 import type { AppointmentByTokenResult } from "@/types/database";
 
+// Permissive UUID-format check: accepts any 8-4-4-4-12 hex string regardless
+// of RFC 4122 version/variant bits (the seeded service IDs use version 0).
+const UUID_LIKE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const bookingSchema = z.object({
-  serviceId: z.string().uuid(),
+  serviceId: z.string().regex(UUID_LIKE, "Invalid service ID"),
   staffId: z.string(), // uuid or "any"
   startTime: z.string().min(1),
   clientName: z.string().min(1).max(120),
