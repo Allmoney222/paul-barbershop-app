@@ -38,6 +38,16 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/terms" className="transition-colors hover:text-[#C9A96E]">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy-policy" className="transition-colors hover:text-[#C9A96E]">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
                 <Link href="/admin/login" className="transition-colors hover:text-[#C9A96E]">
                   Staff Login
                 </Link>
