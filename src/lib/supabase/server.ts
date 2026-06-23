@@ -9,8 +9,8 @@ export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    stripBom(process.env.NEXT_PUBLIC_SUPABASE_URL!),
+    stripBom(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!),
     {
       cookies: {
         getAll() {
@@ -36,7 +36,13 @@ export async function createClient() {
 // context (ISR background regeneration, build-time data fetching, etc.).
 export function createPublicClient() {
   return createSupabaseClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    stripBom(process.env.NEXT_PUBLIC_SUPABASE_URL!),
+    stripBom(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
   );
+}
+
+// Strip UTF-8/UTF-16 BOM (﻿) that Windows can prepend when env vars
+// are copy-pasted from files saved with BOM encoding.
+function stripBom(s: string): string {
+  return s.charCodeAt(0) === 0xfeff ? s.slice(1) : s;
 }
