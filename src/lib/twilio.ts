@@ -71,7 +71,7 @@ export async function sendBookingConfirmationSMS(params: {
   startTime: Date;
   cancelToken: string;
 }): Promise<boolean> {
-  const { clientPhone, clientName, serviceName, staffName, startTime, cancelToken } = params;
+  const { clientPhone, clientName, serviceName, staffName, startTime } = params;
 
   const formattedTime = startTime.toLocaleString("en-US", {
     weekday: "short",
