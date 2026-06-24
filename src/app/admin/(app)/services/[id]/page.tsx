@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { updateService } from "@/lib/actions/services";
 import { getAllStaff } from "@/lib/data/admin";
 import { createClient } from "@/lib/supabase/server";
+import { DeleteServiceButton } from "@/components/admin/delete-service-button";
 
 export default async function EditServicePage({
   params,
@@ -30,6 +31,18 @@ export default async function EditServicePage({
       <h1 className="font-display text-2xl text-[#F5F5F5] sm:text-3xl">Edit {service.name}</h1>
       <GoldDivider className="my-6" />
       <ServiceForm service={service} allStaff={allStaff} assignedStaffIds={assignedStaffIds} action={updateService} />
+
+      <GoldDivider className="my-6" />
+
+      <section className="rounded-xl border border-red-500/20 bg-[#1A1A1A] p-6">
+        <h2 className="font-display text-lg text-red-400">Danger Zone</h2>
+        <p className="mt-1 text-sm text-[#888888]">
+          Permanently delete this service. Any appointments linked to it will also be removed. This cannot be undone.
+        </p>
+        <div className="mt-4">
+          <DeleteServiceButton id={service.id} name={service.name} />
+        </div>
+      </section>
     </div>
   );
 }

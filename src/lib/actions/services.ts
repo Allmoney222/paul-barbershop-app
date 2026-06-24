@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 function serviceFieldsFromForm(formData: FormData) {
   const priceDollars = Number(formData.get("price") ?? 0);
@@ -43,6 +44,31 @@ export async function createService(formData: FormData) {
   if (error) throw error;
 
   await syncStaffServices(service.id, staffIds);
+
+  revalidatePath("/admin/services");
+  revalidatePath("/");
+  redirect("/admin/services");
+}
+
+export async function deleteService(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  if (!id) throw new Error("Missing service id");
+
+  const admin = createAdminClient();
+
+  // appointments.service_id is NOT NULL with no cascade — remove appointments first
+  await admin
+    .from("appointments")
+    .update({ status: "cancelled" })
+    .eq("service_id", id)
+    .in("status", ["booked", "confirmed"])
+    .gte("start_time", new Date().toISOString());
+
+  await admin.from("appointments").delete().eq("service_id", id);
+
+  // staff_services has ON DELETE CASCADE so it's handled automatically
+  const { error } = await admin.from("services").delete().eq("id", id);
+  if (error) throw error;
 
   revalidatePath("/admin/services");
   revalidatePath("/");
