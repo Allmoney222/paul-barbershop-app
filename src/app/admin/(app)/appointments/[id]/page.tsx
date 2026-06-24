@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { getAppointmentById } from "@/lib/data/admin";
 import { updateAppointment } from "@/lib/actions/appointments";
+import { CancelAppointmentButton } from "@/components/admin/cancel-appointment-button";
 import { formatDateLong, formatPrice, formatTime12h } from "@/lib/format";
 import { APPOINTMENT_STATUSES, SHOP_TIMEZONE } from "@/lib/constants";
 
@@ -51,6 +52,18 @@ export default async function AppointmentDetailPage({
         {appointment.client_notes && <Row label="Client Notes" value={appointment.client_notes} last />}
         {!appointment.client_notes && <Row label="Client Notes" value="—" last />}
       </div>
+
+      {appointment.status !== "cancelled" && (
+        <div className="mt-6 rounded-xl border border-red-500/20 bg-[#1A1A1A] p-6">
+          <h2 className="font-display text-lg text-red-400">Cancel Appointment</h2>
+          <p className="mt-1 text-sm text-[#888888]">
+            Mark this appointment as cancelled. The client will not be notified automatically.
+          </p>
+          <div className="mt-4">
+            <CancelAppointmentButton id={appointment.id} clientName={appointment.client_name} />
+          </div>
+        </div>
+      )}
 
       <form action={updateAppointment} className="mt-6 space-y-4 rounded-xl border border-white/5 bg-[#1A1A1A] p-6">
         <input type="hidden" name="id" value={appointment.id} />

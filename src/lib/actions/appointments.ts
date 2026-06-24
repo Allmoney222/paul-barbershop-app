@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { AppointmentStatus } from "@/types/database";
 import { APPOINTMENT_STATUSES } from "@/lib/constants";
@@ -30,4 +31,24 @@ export async function updateAppointment(formData: FormData) {
   revalidatePath("/admin/dashboard");
   revalidatePath("/admin/calendar");
   revalidatePath("/admin/clients");
+}
+
+export async function cancelAppointment(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  if (!id) throw new Error("Missing appointment id");
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("appointments")
+    .update({ status: "cancelled" })
+    .eq("id", id)
+    .neq("status", "cancelled");
+
+  if (error) throw error;
+
+  revalidatePath(`/admin/appointments/${id}`);
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/calendar");
+  revalidatePath("/admin/clients");
+  redirect(`/admin/appointments/${id}`);
 }
