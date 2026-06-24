@@ -131,11 +131,23 @@ export async function deleteStaff(formData: FormData) {
   const { data: staff } = await supabase.from("staff").select("auth_user_id").eq("id", id).maybeSingle();
   if (!staff) throw new Error("Staff member not found");
 
+  // appointments.staff_id is NOT NULL with no cascade rule, so we must remove
+  // the staff's appointments before the staff row can be deleted.
+  // Future bookings are cancelled first so the status is correct in any exports.
+  await admin
+    .from("appointments")
+    .update({ status: "cancelled" })
+    .eq("staff_id", id)
+    .in("status", ["booked", "confirmed"])
+    .gte("start_time", new Date().toISOString());
+
+  await admin.from("appointments").delete().eq("staff_id", id);
+
   if (staff.auth_user_id) {
     await admin.auth.admin.deleteUser(staff.auth_user_id);
   }
 
-  const { error } = await supabase.from("staff").delete().eq("id", id);
+  const { error } = await admin.from("staff").delete().eq("id", id);
   if (error) throw error;
 
   revalidatePath("/admin/staff");
