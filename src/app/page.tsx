@@ -24,7 +24,7 @@ export default async function Home() {
         aria-hidden="true"
       />
       {/* Dark overlay for readability */}
-      <div className="fixed inset-0 -z-10 bg-black/70" aria-hidden="true" />
+      <div className="fixed inset-0 -z-10 bg-black/50" aria-hidden="true" />
       <SiteHeader />
       <main>
         <Hero shop={shop} />
