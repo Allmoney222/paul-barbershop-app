@@ -16,7 +16,15 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D]">
+    <div className="relative min-h-screen">
+      {/* Fixed parallax background */}
+      <div
+        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('https://i.imgur.com/wTR5VqK.png')" }}
+        aria-hidden="true"
+      />
+      {/* Dark overlay for readability */}
+      <div className="fixed inset-0 -z-10 bg-black/70" aria-hidden="true" />
       <SiteHeader />
       <main>
         <Hero shop={shop} />
