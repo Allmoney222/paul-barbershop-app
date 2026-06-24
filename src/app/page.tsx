@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen">
-      <style>{`@media (min-width: 768px) { #parallax-bg { background-position: center -10% !important; } }`}</style>
+      <style>{`@media (min-width: 768px) { #parallax-bg { background-position: center 20% !important; } }`}</style>
       {/* Fixed parallax background */}
       <div
         id="parallax-bg"
