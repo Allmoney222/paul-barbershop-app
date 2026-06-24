@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { PhotoUpload } from "@/components/admin/photo-upload";
 import type { Staff } from "@/types/database";
 
 const inputClass = "border-white/10 bg-[#0D0D0D] text-[#F5F5F5]";
@@ -57,10 +60,8 @@ export function StaffForm({
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="photo_url" className="text-[#F5F5F5]">
-          Photo URL
-        </Label>
-        <Input id="photo_url" name="photo_url" defaultValue={staff?.photo_url ?? ""} className={inputClass} />
+        <Label className="text-[#F5F5F5]">Photo</Label>
+        <PhotoUpload defaultUrl={staff?.photo_url} inputClass={inputClass} />
       </div>
 
       <div className="space-y-1.5">
