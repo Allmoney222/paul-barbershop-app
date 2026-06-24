@@ -19,7 +19,7 @@ export default async function Home() {
     <div className="relative min-h-screen">
       {/* Fixed parallax background */}
       <div
-        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat md:bg-top"
         style={{ backgroundImage: "url('https://i.imgur.com/wTR5VqK.png')" }}
         aria-hidden="true"
       />
