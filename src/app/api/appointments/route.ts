@@ -10,7 +10,7 @@ import { getBookingSettings } from "@/lib/data/shop";
 import { formatDateInTz } from "@/lib/timezone";
 import { SHOP_TIMEZONE } from "@/lib/constants";
 import { getStripe } from "@/lib/stripe";
-import { sendBookingConfirmationEmail } from "@/lib/email";
+import { sendBookingConfirmationEmail, sendAdminBookingNotificationEmail } from "@/lib/email";
 import { sendBookingConfirmationSMS, sendBookingAlertSMS } from "@/lib/twilio";
 import type { AppointmentByTokenResult } from "@/types/database";
 
@@ -153,6 +153,21 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error("Failed to send confirmation email", err);
+  }
+
+  try {
+    await sendAdminBookingNotificationEmail({
+      clientName,
+      clientEmail,
+      clientPhone,
+      shopName: "2Gether Hair Studio",
+      staffName: staff?.name ?? "our team",
+      serviceName: service?.name ?? "Appointment",
+      startTime: new Date(appointment.start_time),
+      endTime: new Date(appointment.end_time),
+    });
+  } catch (err) {
+    console.error("Failed to send admin notification email", err);
   }
 
   // Send SMS notifications (non-blocking)
