@@ -17,9 +17,11 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen">
+      <style>{`@media (min-width: 768px) { #parallax-bg { background-position: center -10% !important; } }`}</style>
       {/* Fixed parallax background */}
       <div
-        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat md:bg-top"
+        id="parallax-bg"
+        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('https://i.imgur.com/wTR5VqK.png')" }}
         aria-hidden="true"
       />
