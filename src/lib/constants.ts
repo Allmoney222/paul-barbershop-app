@@ -5,9 +5,9 @@ export const SHOP_TIMEZONE = "America/New_York";
 export const DEFAULT_SHOP_INFO: ShopInfo = {
   name: "2Gether Hair Studio",
   tagline: "Where beauty, style, and community come together.",
-  address: "123 Elmwood Ave, Buffalo, NY 14201",
-  phone: "716-555-0100",
-  email: "hello@2getherhairstudio.com",
+  address: "1590 Hertel Ave, Buffalo, NY 14216",
+  phone: "716-364-6871",
+  email: "twogetherhairstudio@yahoo.com",
   timezone: SHOP_TIMEZONE,
   hours: {
     mon: "9:00 AM - 7:00 PM",
