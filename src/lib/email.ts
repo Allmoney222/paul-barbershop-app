@@ -53,12 +53,12 @@ export async function sendBookingConfirmationEmail(details: BookingEmailDetails)
         <p>Hi ${escapeHtml(details.clientName)},</p>
         <p>Your appointment is confirmed! Here are the details:</p>
         <table style="width:100%; margin:16px 0; border-collapse:collapse;">
-          <tr><td style="padding:4px 0; color:#888888;">Service</td><td style="padding:4px 0; text-align:right;">${escapeHtml(details.serviceName)}</td></tr>
-          <tr><td style="padding:4px 0; color:#888888;">With</td><td style="padding:4px 0; text-align:right;">${escapeHtml(details.staffName)}</td></tr>
-          <tr><td style="padding:4px 0; color:#888888;">Date</td><td style="padding:4px 0; text-align:right;">${dateStr}</td></tr>
-          <tr><td style="padding:4px 0; color:#888888;">Time</td><td style="padding:4px 0; text-align:right;">${timeStr}</td></tr>
-          <tr><td style="padding:4px 0; color:#888888;">Price</td><td style="padding:4px 0; text-align:right;">${formatPrice(details.priceCents)}</td></tr>
-          ${details.depositPaid ? `<tr><td style="padding:4px 0; color:#888888;">Deposit</td><td style="padding:4px 0; text-align:right;">Paid</td></tr>` : ""}
+          <tr><td style="padding:4px 0; color:#888888;">Service</td><td style="padding:4px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.serviceName)}</td></tr>
+          <tr><td style="padding:4px 0; color:#888888;">With</td><td style="padding:4px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.staffName)}</td></tr>
+          <tr><td style="padding:4px 0; color:#888888;">Date</td><td style="padding:4px 0; text-align:right; color:#F5F5F5;">${dateStr}</td></tr>
+          <tr><td style="padding:4px 0; color:#888888;">Time</td><td style="padding:4px 0; text-align:right; color:#F5F5F5;">${timeStr}</td></tr>
+          <tr><td style="padding:4px 0; color:#888888;">Price</td><td style="padding:4px 0; text-align:right; color:#F5F5F5;">${formatPrice(details.priceCents)}</td></tr>
+          ${details.depositPaid ? `<tr><td style="padding:4px 0; color:#888888;">Deposit</td><td style="padding:4px 0; text-align:right; color:#F5F5F5;">Paid</td></tr>` : ""}
         </table>
         <hr style="border:none; border-top:1px solid #333; margin:24px 0;" />
         <p style="color:#888888; font-size:14px;">
@@ -168,13 +168,13 @@ export async function sendAdminBookingNotificationEmail(details: AdminBookingNot
         <hr style="border:none; border-top:1px solid #C9A96E; opacity:0.5; margin:24px 0;" />
         <p>A new appointment has been booked:</p>
         <table style="width:100%; margin:16px 0; border-collapse:collapse;">
-          <tr><td style="padding:6px 0; color:#888888;">Client</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.clientName)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Phone</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.clientPhone)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Email</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.clientEmail)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Service</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.serviceName)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">With</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.staffName)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Date</td><td style="padding:6px 0; text-align:right;">${dateStr}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Time</td><td style="padding:6px 0; text-align:right;">${timeStr}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Client</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.clientName)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Phone</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.clientPhone)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Email</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.clientEmail)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Service</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.serviceName)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">With</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.staffName)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Date</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${dateStr}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Time</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${timeStr}</td></tr>
         </table>
         <hr style="border:none; border-top:1px solid #333; margin:24px 0;" />
         <p style="color:#888888; font-size:12px; margin:0;">2Gether Hair Studio · Buffalo, NY</p>
@@ -214,11 +214,11 @@ export async function sendBarberBookingNotificationEmail(details: BarberBookingN
         <hr style="border:none; border-top:1px solid #C9A96E; opacity:0.5; margin:24px 0;" />
         <p>Hi ${escapeHtml(details.barberName)}, you have a new appointment:</p>
         <table style="width:100%; margin:16px 0; border-collapse:collapse;">
-          <tr><td style="padding:6px 0; color:#888888;">Client</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.clientName)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Phone</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.clientPhone)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Service</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.serviceName)}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Date</td><td style="padding:6px 0; text-align:right;">${dateStr}</td></tr>
-          <tr><td style="padding:6px 0; color:#888888;">Time</td><td style="padding:6px 0; text-align:right;">${timeStr}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Client</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.clientName)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Phone</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.clientPhone)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Service</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${escapeHtml(details.serviceName)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Date</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${dateStr}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Time</td><td style="padding:6px 0; text-align:right; color:#F5F5F5;">${timeStr}</td></tr>
         </table>
         <hr style="border:none; border-top:1px solid #333; margin:24px 0;" />
         <p style="color:#888888; font-size:13px;">
