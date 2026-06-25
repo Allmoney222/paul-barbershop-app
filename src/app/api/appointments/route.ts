@@ -10,7 +10,7 @@ import { getBookingSettings } from "@/lib/data/shop";
 import { formatDateInTz } from "@/lib/timezone";
 import { SHOP_TIMEZONE } from "@/lib/constants";
 import { getStripe } from "@/lib/stripe";
-import { sendBookingConfirmationEmail, sendAdminBookingNotificationEmail } from "@/lib/email";
+import { sendBookingConfirmationEmail, sendAdminBookingNotificationEmail, sendBarberBookingNotificationEmail } from "@/lib/email";
 import { sendBookingConfirmationSMS, sendBookingAlertSMS } from "@/lib/twilio";
 import type { AppointmentByTokenResult } from "@/types/database";
 
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
   // Fetch related info for email + response
   const [{ data: service }, { data: staff }] = await Promise.all([
     supabase.from("services").select("name, price_cents, requires_deposit").eq("id", serviceId).single(),
-    supabase.from("staff").select("name, phone").eq("id", appointment.staff_id).single(),
+    supabase.from("staff").select("name, phone, email").eq("id", appointment.staff_id).single(),
   ]);
 
   let clientSecret: string | null = null;
@@ -168,6 +168,22 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error("Failed to send admin notification email", err);
+  }
+
+  if (staff?.email) {
+    try {
+      await sendBarberBookingNotificationEmail({
+        barberEmail: staff.email,
+        barberName: staff.name ?? "there",
+        clientName,
+        clientPhone,
+        serviceName: service?.name ?? "Appointment",
+        startTime: new Date(appointment.start_time),
+        endTime: new Date(appointment.end_time),
+      });
+    } catch (err) {
+      console.error("Failed to send barber notification email", err);
+    }
   }
 
   // Send SMS notifications (non-blocking)

@@ -183,6 +183,53 @@ export async function sendAdminBookingNotificationEmail(details: AdminBookingNot
   });
 }
 
+export interface BarberBookingNotificationDetails {
+  barberEmail: string;
+  barberName: string;
+  clientName: string;
+  clientPhone: string;
+  serviceName: string;
+  startTime: Date;
+  endTime: Date;
+}
+
+export async function sendBarberBookingNotificationEmail(details: BarberBookingNotificationDetails) {
+  const resend = getResend();
+  if (!resend) return;
+
+  const from = stripBom(process.env.RESEND_FROM_EMAIL ?? "") || "2Gether Hair Studio <onboarding@resend.dev>";
+  const dateStr = safeFormatDate(details.startTime);
+  const timeStr = safeFormatTimeRange(details.startTime, details.endTime);
+
+  await resend.emails.send({
+    from,
+    to: details.barberEmail,
+    subject: `New Booking: ${details.clientName} — ${details.serviceName} on ${dateStr}`,
+    html: `
+      <div style="font-family: Helvetica, Arial, sans-serif; background:#0D0D0D; color:#F5F5F5; padding:32px; max-width:560px; margin:0 auto;">
+        <h1 style="font-size:24px; margin-bottom:4px;">
+          <span style="color:#C9A96E; font-style:italic;">2Gether</span> Hair Studio
+        </h1>
+        <p style="color:#888888; margin-top:0; font-size:14px;">New Appointment Booked</p>
+        <hr style="border:none; border-top:1px solid #C9A96E; opacity:0.5; margin:24px 0;" />
+        <p>Hi ${escapeHtml(details.barberName)}, you have a new appointment:</p>
+        <table style="width:100%; margin:16px 0; border-collapse:collapse;">
+          <tr><td style="padding:6px 0; color:#888888;">Client</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.clientName)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Phone</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.clientPhone)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Service</td><td style="padding:6px 0; text-align:right;">${escapeHtml(details.serviceName)}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Date</td><td style="padding:6px 0; text-align:right;">${dateStr}</td></tr>
+          <tr><td style="padding:6px 0; color:#888888;">Time</td><td style="padding:6px 0; text-align:right;">${timeStr}</td></tr>
+        </table>
+        <hr style="border:none; border-top:1px solid #333; margin:24px 0;" />
+        <p style="color:#888888; font-size:13px;">
+          Please contact the client directly if you need to make any changes.
+        </p>
+        <p style="color:#888888; font-size:12px; margin-top:24px;">2Gether Hair Studio · Buffalo, NY</p>
+      </div>
+    `,
+  });
+}
+
 function safeFormatDate(date: Date): string {
   try {
     return formatDateLong(date, SHOP_TIMEZONE);
