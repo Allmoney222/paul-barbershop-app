@@ -24,29 +24,48 @@ export function ServicesPreview({ services }: { services: Service[] }) {
           {services.map((service) => (
             <Card
               key={service.id}
-              className="border-white/5 bg-[#1A1A1A] transition-colors hover:border-[#C9A96E]/40"
+              className="relative overflow-hidden border-white/5 transition-colors hover:border-[#C9A96E]/40"
             >
-              <CardHeader>
-                <Badge
-                  variant="secondary"
-                  className="w-fit border-none bg-[#C9A96E]/10 text-[#C9A96E]"
-                >
-                  {service.category}
-                </Badge>
-                <CardTitle className="font-display text-xl text-[#F5F5F5]">
-                  {service.name}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-[#C9A96E] font-semibold">
-                    {formatPrice(service.price_cents)}
-                  </span>
-                  <span className="text-[#888888]">
-                    {formatDuration(service.duration_minutes)}
-                  </span>
-                </div>
-              </CardContent>
+              {/* Background photo + dark overlay */}
+              {service.photo_url ? (
+                <>
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url('${service.photo_url}')` }}
+                  />
+                  <div className="absolute inset-0 bg-black/65" />
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-[#1A1A1A]" />
+              )}
+
+              {/* Content sits above the background */}
+              <div className="relative">
+                <CardHeader>
+                  <Badge
+                    variant="secondary"
+                    className="w-fit border-none bg-[#C9A96E]/10 text-[#C9A96E]"
+                  >
+                    {service.category}
+                  </Badge>
+                  <CardTitle className="font-display text-xl text-[#F5F5F5]">
+                    {service.name}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {service.description && (
+                    <p className="mb-3 text-sm text-[#CCCCCC] line-clamp-2">{service.description}</p>
+                  )}
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-[#C9A96E] font-semibold">
+                      {formatPrice(service.price_cents)}
+                    </span>
+                    <span className="text-[#AAAAAA]">
+                      {formatDuration(service.duration_minutes)}
+                    </span>
+                  </div>
+                </CardContent>
+              </div>
             </Card>
           ))}
         </div>

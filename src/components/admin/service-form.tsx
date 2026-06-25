@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { PhotoUpload } from "@/components/admin/photo-upload";
 import { SERVICE_CATEGORIES } from "@/lib/constants";
 import type { Service, Staff } from "@/types/database";
 
@@ -79,6 +82,11 @@ export function ServiceForm({
             className={inputClass}
           />
         </div>
+      </div>
+
+      <div className="space-y-1.5">
+        <Label className="text-[#F5F5F5]">Service Photo</Label>
+        <PhotoUpload defaultUrl={service?.photo_url} inputClass={inputClass} />
       </div>
 
       <div className="space-y-1.5">

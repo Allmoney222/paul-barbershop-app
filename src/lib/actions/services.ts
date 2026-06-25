@@ -12,6 +12,7 @@ function serviceFieldsFromForm(formData: FormData) {
     name: String(formData.get("name") ?? "").trim(),
     category: String(formData.get("category") ?? "Hair"),
     description: String(formData.get("description") ?? "").trim() || null,
+    photo_url: String(formData.get("photo_url") ?? "").trim() || null,
     duration_minutes: Number(formData.get("duration_minutes") ?? 30),
     price_cents: Math.round(priceDollars * 100),
     requires_deposit: formData.get("requires_deposit") === "on",
