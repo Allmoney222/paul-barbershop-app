@@ -27,6 +27,7 @@ export type Service = {
   name: string;
   category: string;
   description: string | null;
+  photo_url: string | null;
   duration_minutes: number;
   price_cents: number;
   requires_deposit: boolean;
