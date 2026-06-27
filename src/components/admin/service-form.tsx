@@ -66,6 +66,15 @@ export function ServiceForm({
             defaultValue={service ? (service.price_cents / 100).toFixed(2) : ""}
             className={inputClass}
           />
+          <label className="flex items-center gap-2 pt-1 text-sm text-[#F5F5F5] cursor-pointer">
+            <input
+              type="checkbox"
+              name="price_is_starting_at"
+              defaultChecked={service?.price_is_starting_at ?? false}
+              className="h-4 w-4 accent-[#C9A96E]"
+            />
+            <span>Starting at price</span>
+          </label>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="duration_minutes" className="text-[#F5F5F5]">
@@ -83,16 +92,6 @@ export function ServiceForm({
           />
         </div>
       </div>
-
-      <label className="flex items-center gap-2 text-sm text-[#F5F5F5]">
-        <input
-          type="checkbox"
-          name="price_is_starting_at"
-          defaultChecked={service?.price_is_starting_at ?? false}
-          className="h-4 w-4 rounded border-white/10 bg-[#0D0D0D] accent-[#C9A96E]"
-        />
-        Show price as &ldquo;Starting at&rdquo; (e.g. Starting at $30)
-      </label>
 
       <div className="space-y-1.5">
         <Label className="text-[#F5F5F5]">Service Photo</Label>
