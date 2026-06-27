@@ -17,15 +17,48 @@ function parseSpecialties(value: string): string[] {
     .filter((s) => s.length > 0);
 }
 
-function staffFieldsFromForm(formData: FormData) {
+function getUploadedPhotoUrl(formData: FormData) {
+  const file = formData.get("photo");
+  if (!(file instanceof File) || file.size === 0) {
+    return null;
+  }
+
+  return { file };
+}
+
+async function uploadPhoto(file: File) {
+  const bucket = process.env.SUPABASE_STORAGE_BUCKET ?? "public";
+  const admin = createAdminClient();
+
+  const fileExt = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const filePath = `staff/${crypto.randomUUID()}.${fileExt}`;
+  const fileData = Buffer.from(await file.arrayBuffer());
+
+  const { error: uploadError } = await admin.storage.from(bucket).upload(filePath, fileData, {
+    contentType: file.type,
+  });
+
+  if (uploadError) {
+    throw uploadError;
+  }
+
+  const { data: publicUrlData } = admin.storage.from(bucket).getPublicUrl(filePath);
+
+  return publicUrlData.publicUrl;
+}
+
+async function staffFieldsFromForm(formData: FormData) {
   const role = String(formData.get("role") ?? "stylist");
+  const photoUrlFromInput = String(formData.get("photo_url") ?? "").trim() || null;
+  const uploadedPhoto = getUploadedPhotoUrl(formData);
+  const photo_url = uploadedPhoto ? await uploadPhoto(uploadedPhoto.file) : photoUrlFromInput;
 
   return {
     name: String(formData.get("name") ?? "").trim(),
     email: String(formData.get("email") ?? "").trim(),
     phone: String(formData.get("phone") ?? "").trim() || null,
     bio: String(formData.get("bio") ?? "").trim() || null,
-    photo_url: String(formData.get("photo_url") ?? "").trim() || null,
+    photo_url,
     specialties: parseSpecialties(String(formData.get("specialties") ?? "")),
     role: (ROLES.includes(role as StaffRole) ? role : "stylist") as StaffRole,
     active: formData.get("active") === "on",
