@@ -130,6 +130,7 @@ export const MOCK_SERVICES: Service[] = [
     photo_url: null,
     duration_minutes: 90,
     price_cents: 8000,
+    price_is_starting_at: false,
     requires_deposit: true,
     active: true,
     sort_order: 6,
