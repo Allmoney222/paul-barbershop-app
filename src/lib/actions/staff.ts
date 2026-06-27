@@ -67,7 +67,7 @@ async function staffFieldsFromForm(formData: FormData) {
 }
 
 export async function createStaff(formData: FormData) {
-  const fields = staffFieldsFromForm(formData);
+  const fields = await staffFieldsFromForm(formData);
   const sendInvite = formData.get("send_invite") === "on";
 
   if (!fields.name || !fields.email) {
@@ -191,7 +191,7 @@ export async function updateStaff(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   if (!id) throw new Error("Missing staff id");
 
-  const fields = staffFieldsFromForm(formData);
+  const fields = await staffFieldsFromForm(formData);
 
   if (!fields.name || !fields.email) {
     throw new Error("Name and email are required");
