@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatDuration, formatPrice } from "@/lib/format";
+import { formatDuration, formatServicePrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { Service } from "@/types/database";
 
@@ -53,7 +53,7 @@ export function ServiceStep({
                         variant="secondary"
                         className="shrink-0 border-none bg-[#C9A96E]/10 text-[#C9A96E]"
                       >
-                        {formatPrice(service.price_cents)}
+                        {formatServicePrice(service.price_cents, service.price_is_starting_at)}
                       </Badge>
                     </div>
                     <p className="mt-3 text-xs text-[#888888]">

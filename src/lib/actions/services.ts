@@ -15,6 +15,7 @@ function serviceFieldsFromForm(formData: FormData) {
     photo_url: String(formData.get("photo_url") ?? "").trim() || null,
     duration_minutes: Number(formData.get("duration_minutes") ?? 30),
     price_cents: Math.round(priceDollars * 100),
+    price_is_starting_at: formData.get("price_is_starting_at") === "on",
     requires_deposit: formData.get("requires_deposit") === "on",
     active: formData.get("active") === "on",
     sort_order: Number(formData.get("sort_order") ?? 0),

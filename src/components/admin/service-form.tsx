@@ -84,6 +84,16 @@ export function ServiceForm({
         </div>
       </div>
 
+      <label className="flex items-center gap-2 text-sm text-[#F5F5F5]">
+        <input
+          type="checkbox"
+          name="price_is_starting_at"
+          defaultChecked={service?.price_is_starting_at ?? false}
+          className="h-4 w-4 rounded border-white/10 bg-[#0D0D0D] accent-[#C9A96E]"
+        />
+        Show price as &ldquo;Starting at&rdquo; (e.g. Starting at $30)
+      </label>
+
       <div className="space-y-1.5">
         <Label className="text-[#F5F5F5]">Service Photo</Label>
         <PhotoUpload defaultUrl={service?.photo_url} inputClass={inputClass} />

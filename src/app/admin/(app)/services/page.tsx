@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { getAllServices } from "@/lib/data/admin";
-import { formatPrice, formatDuration } from "@/lib/format";
+import { formatServicePrice, formatDuration } from "@/lib/format";
 
 export default async function AdminServicesPage() {
   await requireAdmin();
@@ -44,7 +44,7 @@ export default async function AdminServicesPage() {
                 <TableCell className="font-medium text-[#F5F5F5]">{service.name}</TableCell>
                 <TableCell className="text-[#888888]">{service.category}</TableCell>
                 <TableCell className="text-[#888888]">{formatDuration(service.duration_minutes)}</TableCell>
-                <TableCell className="text-[#F5F5F5]">{formatPrice(service.price_cents)}</TableCell>
+                <TableCell className="text-[#F5F5F5]">{formatServicePrice(service.price_cents, service.price_is_starting_at)}</TableCell>
                 <TableCell>
                   <Badge
                     variant="outline"

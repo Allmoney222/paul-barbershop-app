@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GoldDivider } from "@/components/site/gold-divider";
-import { formatDuration, formatPrice } from "@/lib/format";
+import { formatDuration, formatServicePrice } from "@/lib/format";
 import type { Service } from "@/types/database";
 
 export function ServicesPreview({ services }: { services: Service[] }) {
@@ -58,7 +58,7 @@ export function ServicesPreview({ services }: { services: Service[] }) {
                   )}
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-[#C9A96E] font-semibold">
-                      {formatPrice(service.price_cents)}
+                      {formatServicePrice(service.price_cents, service.price_is_starting_at)}
                     </span>
                     <span className="text-[#AAAAAA]">
                       {formatDuration(service.duration_minutes)}

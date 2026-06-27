@@ -30,6 +30,7 @@ export type Service = {
   photo_url: string | null;
   duration_minutes: number;
   price_cents: number;
+  price_is_starting_at: boolean;
   requires_deposit: boolean;
   active: boolean;
   sort_order: number;

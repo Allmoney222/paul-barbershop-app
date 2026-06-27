@@ -36,8 +36,13 @@ async function runBookingFlow(browser, serviceName, { expectDeposit = false } = 
       btns.map((b) => b.getAttribute("aria-label")).filter((l) => l && !l.includes("Month") && !l.startsWith("Sunday"))
     );
 
+    const cutoff = Date.now() + 24 * 60 * 60 * 1000; // must be > 24h from now
     let picked = null;
     for (const label of enabledDays) {
+      // Skip any day that is within 24 hours
+      const dayDate = new Date(label.replace(/(\w+),\s*(\w+)\s+(\d+)\w*,?\s*(\d+)/, "$2 $3 $4"));
+      if (dayDate.getTime() < cutoff) continue;
+
       await page.click(`button[aria-label="${label}"]`);
       await sleep(3000);
       const slots = page.locator("button").filter({ hasText: /\d{1,2}:\d{2}\s*(AM|PM)/i });
@@ -60,7 +65,7 @@ async function runBookingFlow(browser, serviceName, { expectDeposit = false } = 
 
     // Step 4: fill details
     await page.fill("input[name='clientName']", "Test Booking E2E");
-    await page.fill("input[name='clientEmail']", "test@example.com");
+    await page.fill("input[name='clientEmail']", "ph2smp@yahoo.com");
     await page.fill("input[name='clientPhone']", "7165550199");
     await sleep(300);
     console.log(`  ✅ Filled details`);

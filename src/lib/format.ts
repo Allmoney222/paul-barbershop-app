@@ -6,6 +6,11 @@ export function formatPrice(cents: number): string {
   }).format(cents / 100);
 }
 
+export function formatServicePrice(cents: number, startingAt: boolean): string {
+  const price = formatPrice(cents);
+  return startingAt ? `Starting at ${price}` : price;
+}
+
 export function formatDuration(minutes: number): string {
   if (minutes < 60) return `${minutes} min`;
   const hours = Math.floor(minutes / 60);
