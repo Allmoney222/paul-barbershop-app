@@ -94,6 +94,12 @@ export function DetailsStep({
             {...register("clientNotes")}
           />
         </div>
+
+        <p className="text-xs text-gray-400 mt-4">
+          By providing your phone number, you agree to receive appointment
+          confirmation and reminder texts from 2Gether Hair Studio.
+          Message &amp; data rates may apply. Reply STOP to opt out.
+        </p>
       </form>
     </div>
   );
