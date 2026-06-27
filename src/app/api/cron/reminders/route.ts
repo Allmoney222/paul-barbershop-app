@@ -31,8 +31,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ sent: 0 });
   }
 
-  const staffIds = [...new Set(appointments.map((a) => a.staff_id))];
-  const serviceIds = [...new Set(appointments.map((a) => a.service_id))];
+  const staffIds = Array.from(new Set(appointments.map((a) => a.staff_id)));
+  const serviceIds = Array.from(new Set(appointments.map((a) => a.service_id)));
 
   const [{ data: staffRows }, { data: serviceRows }] = await Promise.all([
     supabase.from("staff").select("id, name").in("id", staffIds),
