@@ -116,6 +116,29 @@ export async function sendBookingAlertSMS(params: {
 /**
  * Send cancellation SMS to client
  */
+export async function sendReminderSMS(params: {
+  clientPhone: string;
+  clientName: string;
+  serviceName: string;
+  staffName: string;
+  startTime: Date;
+}): Promise<boolean> {
+  const { clientPhone, clientName, serviceName, staffName, startTime } = params;
+
+  const formattedTime = startTime.toLocaleString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const message = `Hi ${clientName}, just a reminder that you have an appointment tomorrow with ${staffName} for ${serviceName} at ${formattedTime}. 2Gether Hair Studio`;
+
+  return sendSMS(clientPhone, message);
+}
+
 export async function sendCancellationSMS(params: {
   clientPhone: string;
   clientName: string;
