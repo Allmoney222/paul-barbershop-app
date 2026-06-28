@@ -6,7 +6,7 @@ export const DEFAULT_SHOP_INFO: ShopInfo = {
   name: "2Gether Hair Studio",
   tagline: "Where beauty, style, and community come together.",
   address: "1590 Hertel Ave, Buffalo, NY 14216",
-  phone: "716-364-6871",
+  phone: "(716) 364-6871",
   email: "twogetherhairstudio@yahoo.com",
   timezone: SHOP_TIMEZONE,
   hours: {
