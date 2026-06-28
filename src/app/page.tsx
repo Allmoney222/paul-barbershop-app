@@ -6,7 +6,7 @@ import { TeamSection } from "@/components/site/team-section";
 import { LocationHours } from "@/components/site/location-hours";
 import { getActiveServices, getActiveStaff, getShopInfo } from "@/lib/data/shop";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const [shop, services, staff] = await Promise.all([
