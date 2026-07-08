@@ -100,7 +100,7 @@ export function DetailsStep({
           <input
             id="smsConsent"
             type="checkbox"
-            className="mt-1 h-4 w-4 shrink-0 rounded-sm border border-white/20 bg-[#1A1A1A] accent-white"
+            className="mt-1 h-4 w-4 shrink-0 rounded-sm border-2 border-white bg-[#1A1A1A] accent-white"
             {...register("smsConsent")}
           />
           <Label htmlFor="smsConsent" className="text-sm font-normal text-[#888888]">
