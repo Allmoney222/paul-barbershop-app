@@ -12,6 +12,7 @@ export const clientDetailsSchema = z.object({
   clientEmail: z.string().email("Please enter a valid email"),
   clientPhone: z.string().min(7, "Please enter a valid phone number"),
   clientNotes: z.string().max(1000).optional(),
+  smsConsent: z.boolean().optional(),
 });
 
 export type ClientDetails = z.infer<typeof clientDetailsSchema>;
@@ -95,11 +96,19 @@ export function DetailsStep({
           />
         </div>
 
-        <p className="text-sm text-white mt-4 italic">
-          By providing your phone number, you agree to receive appointment
-          confirmation and reminder texts from 2Gether Hair Studio.
-          Message &amp; data rates may apply. Reply STOP to opt out.
-        </p>
+        <div className="mt-4 flex items-start gap-2">
+          <input
+            id="smsConsent"
+            type="checkbox"
+            className="mt-1 h-4 w-4 shrink-0 rounded-sm border border-white/20 bg-[#1A1A1A] accent-white"
+            {...register("smsConsent")}
+          />
+          <Label htmlFor="smsConsent" className="text-sm font-normal text-[#888888]">
+            I agree to receive appointment confirmation and reminder texts from
+            2Gether Hair Studio. Message &amp; data rates may apply. Reply STOP
+            to opt out.
+          </Label>
+        </div>
       </form>
     </div>
   );
