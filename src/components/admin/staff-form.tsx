@@ -20,8 +20,19 @@ export function StaffForm({
   const isEdit = Boolean(staff);
 
   return (
-    <form action={action} className="space-y-5 rounded-xl border border-white/5 bg-[#1A1A1A] p-6">
+    <form
+      action={action}
+      encType="multipart/form-data"
+      className="space-y-5 rounded-xl border border-white/5 bg-[#1A1A1A] p-6"
+    >
       {isEdit && <input type="hidden" name="id" value={staff!.id} />}
+
+      <div className="rounded-2xl border border-[#C9A96E]/30 bg-[#111111] p-4 text-sm text-[#E5DAB3] shadow-[0_0_0_1px_rgba(201,169,110,0.2)]">
+        <p className="font-medium text-[#F5F5F5]">Staff Photo Upload</p>
+        <p className="mt-1 text-sm text-[#BDB5A2]">
+          Use the photo upload field below to attach a staff image. You can also paste an external photo URL if needed.
+        </p>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
@@ -56,6 +67,29 @@ export function StaffForm({
             <option value="stylist">Stylist</option>
             <option value="barber">Barber</option>
           </select>
+        </div>
+      </div>
+
+      <div className="space-y-2 rounded-2xl border border-[#C9A96E]/30 bg-[#151515] p-4 shadow-[0_0_0_1px_rgba(201,169,110,0.2)]">
+        <div className="flex items-center justify-between gap-2">
+          <Label htmlFor="photo" className="text-[#F5F5F5]">
+            Photo Upload
+          </Label>
+          <span className="rounded-full bg-[#C9A96E]/10 px-3 py-1 text-xs font-medium text-[#C9A96E]">
+            New feature
+          </span>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
+          <input
+            id="photo"
+            name="photo"
+            type="file"
+            accept="image/*"
+            className="block w-full rounded-md border border-white/10 bg-[#0D0D0D] px-3 py-2 text-sm text-[#F5F5F5] shadow-sm file:mr-4 file:rounded-full file:border-0 file:bg-[#C9A96E] file:px-4 file:py-2 file:text-[#0D0D0D]"
+          />
+          <span className="text-xs text-[#888888]">
+            Optional. Upload an image from your computer, or provide a Photo URL below.
+          </span>
         </div>
       </div>
 

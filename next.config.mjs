@@ -8,6 +8,18 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "drive.google.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.usercontent.google.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
         hostname: "i.imgur.com",
       },
       {

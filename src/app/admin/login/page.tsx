@@ -57,6 +57,10 @@ export default async function AdminLoginPage({
             Sign In
           </Button>
         </form>
+
+        <p className="mt-4 text-sm text-[#888888]">
+          After signing in, open <span className="text-[#F5F5F5]">/admin/staff/new</span> to add a staff member and upload a photo.
+        </p>
       </div>
     </div>
   );
