@@ -56,7 +56,9 @@ export default function TermsPage() {
               <h2 className="text-2xl font-semibold text-white">SMS Notifications</h2>
               <p className="mt-3 text-[#CCCCCC] leading-7">
                 With your consent, we may send SMS notifications for appointment confirmations, reminders, and service updates.
-                Messages are delivered via Twilio, and standard message and data rates may apply.
+                Messages are delivered via Twilio, and phone numbers are used only for appointment-related communication.
+                Mobile numbers are not shared with third parties or affiliates for marketing purposes. Message frequency varies.
+                Message and data rates may apply. Reply STOP to opt out at any time.
               </p>
             </section>
 
