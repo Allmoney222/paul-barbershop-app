@@ -75,6 +75,8 @@ export default function PrivacyPolicyPage() {
               <p className="mt-3 text-[#CCCCCC] leading-7">
                 We may send SMS messages to confirm appointments, remind you of upcoming visits, or communicate urgent updates.
                 These messages are delivered through Twilio, and phone numbers are used only for appointment-related communication.
+                Mobile numbers are not shared with third parties or affiliates for marketing purposes. Message frequency varies.
+                Message and data rates may apply. Reply STOP to opt out at any time.
               </p>
             </section>
 
