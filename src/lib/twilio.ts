@@ -82,7 +82,7 @@ export async function sendBookingConfirmationSMS(params: {
     hour12: true,
   });
 
-  const message = `Hi ${clientName}! Your appointment is confirmed with ${staffName} for ${serviceName} on ${formattedTime}. Reply CANCEL or visit your confirmation email to reschedule. 💈`;
+  const message = `Hi ${clientName}! Your appointment is confirmed with ${staffName} for ${serviceName} on ${formattedTime}. Reply CANCEL or visit your confirmation email to reschedule. Reply STOP to opt out. 💈`;
 
   return sendSMS(clientPhone, message);
 }
@@ -134,7 +134,7 @@ export async function sendReminderSMS(params: {
     hour12: true,
   });
 
-  const message = `Hi ${clientName}, just a reminder that you have an appointment tomorrow with ${staffName} for ${serviceName} at ${formattedTime}. 2Gether Hair Studio`;
+  const message = `Hi ${clientName}, just a reminder that you have an appointment tomorrow with ${staffName} for ${serviceName} at ${formattedTime}. 2Gether Hair Studio. Reply STOP to opt out.`;
 
   return sendSMS(clientPhone, message);
 }
@@ -156,7 +156,7 @@ export async function sendCancellationSMS(params: {
     hour12: true,
   });
 
-  const message = `Hi ${clientName}, your appointment for ${serviceName} on ${formattedTime} has been cancelled. Please contact us if you have any questions. 2Gether Hair Studio`;
+  const message = `Hi ${clientName}, your appointment for ${serviceName} on ${formattedTime} has been cancelled. Please contact us if you have any questions. 2Gether Hair Studio. Reply STOP to opt out.`;
 
   return sendSMS(clientPhone, message);
 }
