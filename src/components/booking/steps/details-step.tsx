@@ -105,8 +105,9 @@ export function DetailsStep({
           />
           <Label htmlFor="smsConsent" className="text-sm font-normal text-[#888888]">
             I agree to receive appointment confirmation and reminder texts from
-            2Gether Hair Studio. Message &amp; data rates may apply. Reply STOP
-            to opt out.
+            2Gether Hair Studio. Mobile numbers are not shared with third parties
+            or affiliates for marketing purposes. Message frequency varies. Message
+            &amp; data rates may apply. Reply STOP to opt out.
           </Label>
         </div>
       </form>
