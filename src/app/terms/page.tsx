@@ -58,7 +58,8 @@ export default function TermsPage() {
                 With your consent, we may send SMS notifications for appointment confirmations, reminders, and service updates.
                 Messages are delivered via Twilio, and phone numbers are used only for appointment-related communication.
                 Mobile numbers are not shared with third parties or affiliates for marketing purposes. Message frequency varies.
-                Message and data rates may apply. Reply STOP to opt out at any time.
+                Message and data rates may apply. Reply <strong>HELP</strong> for help or <strong>STOP</strong> to opt out at any time.
+                For support, contact 2Gether Hair Studio at (716) 364-6871 or twogetherhairstudio@yahoo.com.
               </p>
             </section>
 
