@@ -107,7 +107,25 @@ export function DetailsStep({
             I agree to receive appointment confirmation and reminder texts from
             2Gether Hair Studio. Mobile numbers are not shared with third parties
             or affiliates for marketing purposes. Message frequency varies. Message
-            &amp; data rates may apply. Reply STOP to opt out.
+            &amp; data rates may apply. Reply STOP to opt out. View our{" "}
+            <a
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-[#F5F5F5]"
+            >
+              Privacy Policy
+            </a>{" "}
+            and{" "}
+            <a
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-[#F5F5F5]"
+            >
+              Terms of Service
+            </a>
+            .
           </Label>
         </div>
       </form>
