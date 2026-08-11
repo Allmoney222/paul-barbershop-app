@@ -26,8 +26,8 @@ if (!to) {
   process.exit(1);
 }
 
-const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
-if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER) {
+const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_MESSAGING_SERVICE_SID, TWILIO_PHONE_NUMBER } = process.env;
+if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !(TWILIO_MESSAGING_SERVICE_SID || TWILIO_PHONE_NUMBER)) {
   console.error('Twilio credentials not found in .env.local');
   process.exit(1);
 }
@@ -38,7 +38,9 @@ const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
   try {
     const res = await client.messages.create({
       body: 'Test SMS from 2Gether Hair Studio (Twilio)',
-      from: TWILIO_PHONE_NUMBER,
+      ...(TWILIO_MESSAGING_SERVICE_SID
+        ? { messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
+        : { from: TWILIO_PHONE_NUMBER }),
       to,
     });
     console.log('Message sent, sid=', res.sid);

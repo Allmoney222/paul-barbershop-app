@@ -2,13 +2,14 @@ import twilio from "twilio";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
 const fromPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 
 /**
  * Initialize Twilio client if credentials are configured
  */
 function getTwilioClient() {
-  if (!accountSid || !authToken || !fromPhoneNumber) {
+  if (!accountSid || !authToken || !(messagingServiceSid || fromPhoneNumber)) {
     return null;
   }
   return twilio(accountSid, authToken);
@@ -18,7 +19,7 @@ function getTwilioClient() {
  * Check if Twilio is properly configured
  */
 export function isTwilioConfigured(): boolean {
-  return !!(accountSid && authToken && fromPhoneNumber);
+  return !!(accountSid && authToken && (messagingServiceSid || fromPhoneNumber));
 }
 
 /**
@@ -48,7 +49,9 @@ export async function sendSMS(toPhoneNumber: string, message: string): Promise<b
 
     const result = await client.messages.create({
       body: message,
-      from: fromPhoneNumber,
+      ...(messagingServiceSid
+        ? { messagingServiceSid }
+        : { from: fromPhoneNumber }),
       to: formattedNumber,
     });
 
