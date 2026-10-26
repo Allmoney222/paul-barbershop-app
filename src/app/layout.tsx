@@ -12,9 +12,28 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL?.startsWith("http")
+      ? process.env.NEXT_PUBLIC_APP_URL
+      : "https://2getherhairstudio.com"
+  ),
   title: "2Gether Hair Studio | Buffalo, NY",
   description:
     "Where beauty, style, and community come together. Book your appointment with 2Gether Hair Studio in Buffalo, NY.",
+  openGraph: {
+    title: "2Gether Hair Studio | Buffalo, NY",
+    description:
+      "Where beauty, style, and community come together. Book your appointment with 2Gether Hair Studio in Buffalo, NY.",
+    siteName: "2Gether Hair Studio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "2Gether Hair Studio | Buffalo, NY",
+    description:
+      "Where beauty, style, and community come together. Book your appointment with 2Gether Hair Studio in Buffalo, NY.",
+  },
 };
 
 export default function RootLayout({
